@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  user_purchased_books: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Book",
+  }],
   user_reading_books: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Book",
