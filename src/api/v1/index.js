@@ -1,9 +1,9 @@
 import express from 'express';
 
 // auth routes import
-import authRoutes from './auth.routes.js';
+import authRoutes from '../../routes/auth.routes.js';
 
-export const createApi = () => {
+const createApi = () => {
   const api = express.Router();
 
   // auth routes
@@ -11,3 +11,5 @@ export const createApi = () => {
 
   return api;
 };
+
+export default createApi;
