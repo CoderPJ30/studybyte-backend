@@ -1,6 +1,11 @@
 import ERRORS from '../config/error.config.js';
 
 const successResponse = ({ res, data = undefined, message, token = undefined }) => {
+  if (data?.fileStream) {
+    res.setHeader('Content-Type', 'application/pdf');
+    return data.fileStream.pipe(res);
+  }
+
   res.status(200).json({
     status: 200,
     message,

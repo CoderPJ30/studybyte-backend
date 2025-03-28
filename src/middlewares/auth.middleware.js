@@ -22,7 +22,7 @@ const verifyToken = (req, res, next) => {
 
 const roleValidator = (roles) => {
   return (req, res, next) => {
-    if (roles.includes(req.user.role)) {
+    if (roles.includes(req.user.user_role)) {
       next();
     } else {
       return errorResponse(req, res, { type: "FORBIDDEN" });

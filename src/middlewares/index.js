@@ -1,5 +1,5 @@
 import { verifyToken, roleValidator } from './auth.middleware.js';
-import { upload } from './multer.middleware.js';
+import { upload } from './upload.middleware.js';
 
 export {
   verifyToken,

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Book from "./book.model.js";
 import jwt from "jsonwebtoken";
 import bcyptjs from 'bcryptjs';
 
@@ -27,24 +26,43 @@ const userSchema = new mongoose.Schema({
   },
   user_purchased_books: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: Book,
+    ref: "Book",
   }],
-  user_reading_books: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Book,
-  }],
+  user_reading_books: [
+    {
+      book: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+        required: true,
+      },
+      progress: {
+        type: Number, // Stores last read page
+        default: 0,
+      },
+    },
+  ],
   user_liked_books: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: Book,
+    ref: "Book",
   }],
   user_saved_books: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: Book,
+    ref: "Book",
   }],
-  user_rated_books: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Book,
-  }],
+  user_rated_books: [
+    {
+      book: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+      },
+      rating: {
+        type: Number,
+        min: 0.5,
+        max: 5,
+        required: true,
+      },
+    },
+  ],
 }, { timestamps: true });
 
 userSchema.pre("save", async function (next) {
@@ -62,7 +80,8 @@ userSchema.methods.generateAccessToken = async function () {
     {
       _id: this._id,
       user_fullname: this.user_fullname,
-      user_email: this.user_email
+      user_email: this.user_email,
+      user_role: this.user_role,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY },)

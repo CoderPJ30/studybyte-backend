@@ -1,12 +1,12 @@
 import User from "../models/user.model.js";
 
-const register = async ({ fullname, email, password }) => {
+const register = async ({ fullName, email, password }) => {
   const user = await User.findOne({ user_email: email });
   if (user)
     throw { type: "ALREADY_EXISTS", customMessage: "User with this email already exists." };
 
   const newUser = await User.create({
-    user_fullname: fullname,
+    user_fullname: fullName,
     user_email: email,
     user_password: password
   })

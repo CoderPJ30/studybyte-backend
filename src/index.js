@@ -11,6 +11,9 @@ import './db/index.js';
 // api routes setup
 import createApi from './api/v1/index.js';
 
+// MiniSearch setup
+import { loadBooks } from './utils/miniSearch.js';
+
 // environment vars
 const PORT = process.env.PORT || 8000;
 
@@ -44,6 +47,12 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development',
   });
 });
+
+
+// Load books into MiniSearch before handling API requests
+loadBooks()
+  .then(() => console.log('Books loaded into MiniSearch'))
+  .catch((err) => console.error('Failed to load books into MiniSearch:', err));
 
 // api routes
 app.use('/api/v1', createApi());

@@ -31,12 +31,24 @@ const bookSchema = new mongoose.Schema({
   },
   book_genre: {
     type: String,
-    enums: genres,
+    enum: genres,
     trim: true,
   },
   book_cover: {
-    type: String,
+    type: String,  // Cloudinary URL
     trim: true,
+  },
+  book_file_url: {
+    type: String,  // Cloudinary URL (for free books)
+    trim: true,
+  },
+  book_file_id: {
+    type: mongoose.Schema.Types.ObjectId,  // GridFS file ID (for paid books)
+    trim: true,
+  },
+  book_isPaid: {
+    type: Boolean,
+    default: false,
   },
   book_price: {
     type: Number,
