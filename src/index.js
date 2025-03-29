@@ -24,7 +24,10 @@ const app = express();
 app.use(helmet());
 
 // enable cors
-app.use(cors({ origin: 'https://studybyte-six.vercel.app' }));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN,
+  credentials: true
+}));
 
 // parse JSON request body
 app.use(express.json({ limit: '10mb' }));
