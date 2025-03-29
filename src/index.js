@@ -28,7 +28,7 @@ const corsOptions = {
     const allowedOrigins = [
       process.env.CORS_ORIGIN,
       "https://studybyte-six.vercel.app",
-      "http://localhost:3000" // for local development
+      "http://localhost:5173" // for local development
     ];
 
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
