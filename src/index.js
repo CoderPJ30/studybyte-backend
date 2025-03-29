@@ -23,11 +23,30 @@ const app = express();
 // set security HTTP headers
 app.use(helmet());
 
-// enable cors
-app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  credentials: true
-}));
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      process.env.CORS_ORIGIN,
+      "https://studybyte-six.vercel.app",
+      "http://localhost:3000" // for local development
+    ];
+
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// enable CORS with options
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions))
 
 // parse JSON request body
 app.use(express.json({ limit: '10mb' }));
