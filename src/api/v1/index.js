@@ -9,6 +9,9 @@ import bookRoutes from '../../routes/book.routes.js';
 // user routes import
 import userRoutes from '../../routes/user.routes.js';
 
+// contact routes import
+import contactRoutes from '../../routes/contact.routes.js';
+
 const createApi = () => {
   const api = express.Router();
 
@@ -20,6 +23,9 @@ const createApi = () => {
 
   // user routes
   userRoutes(api);
+
+  // contact routes
+  contactRoutes(api);
 
   return api;
 };

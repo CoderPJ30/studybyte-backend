@@ -67,4 +67,46 @@ const updateUserProfile = async (req, res) => {
   }
 }
 
-export default { getUserProfile, getUserBooks, likeBook, bookmarkBook, rateBook, updateUserProfile };
+const getUserCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const cart = await userService.getUserCart(userId);
+    successResponse({ res, data: cart, message: "User cart fetched successfully." });
+  } catch (error) {
+    errorResponse(req, res, error);
+  }
+}
+
+const addBookToCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const bookId = req.params.bookId;
+    await userService.addBookToCart(userId, bookId);
+    successResponse({ res, message: "Book added to cart successfully." });
+  } catch (error) {
+    errorResponse(req, res, error);
+  }
+}
+
+const removeBookFromCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const bookId = req.params.bookId;
+    await userService.removeBookFromCart(userId, bookId);
+    successResponse({ res, message: "Book removed from cart successfully." });
+  } catch (error) {
+    errorResponse(req, res, error);
+  }
+}
+
+export default {
+  getUserProfile,
+  getUserBooks,
+  likeBook,
+  bookmarkBook,
+  rateBook,
+  updateUserProfile,
+  getUserCart,
+  addBookToCart,
+  removeBookFromCart,
+};

@@ -3,6 +3,7 @@ import { verifyToken, roleValidator, upload } from '../middlewares/index.js';
 
 const bookRoutes = (app) => {
   app.get('/books', verifyToken, bookController.getBooks);
+  app.get('/books/all', verifyToken, bookController.getAllBooks);
   app.get('/books/:id', verifyToken, bookController.getBookById);
   app.get('/books/user-section/:section', verifyToken, bookController.getUserBooksBySection);
   app.get('/books/search', verifyToken, bookController.searchBooks);

@@ -58,6 +58,63 @@ const getBooks = async (query) => {
   return { books, hasMore };
 };
 
+const getAllBooks = async (query) => {
+  const limitPerGenre = parseInt(query.limit) || 4;
+
+  const booksByGenre = await Book.aggregate([
+    // Sort by genre and then by createdAt
+    { $sort: { book_genre: 1, createdAt: -1 } },
+
+    // Use window function to add row numbers per genre
+    {
+      $setWindowFields: {
+        partitionBy: "$book_genre",
+        sortBy: { createdAt: -1 },
+        output: {
+          genreRank: { $documentNumber: {} }
+        }
+      }
+    },
+
+    // Limit books per genre
+    { $match: { genreRank: { $lte: limitPerGenre } } },
+
+    // Remove unwanted fields from each book before grouping
+    {
+      $addFields: {
+        book_file_url: "$$REMOVE",
+        book_file_id: "$$REMOVE"
+      }
+    },
+
+    // Group into final structure
+    {
+      $group: {
+        _id: "$book_genre",
+        books: { $push: "$$ROOT" }
+      }
+    },
+
+    // Optionally reshape output
+    {
+      $project: {
+        _id: 0,
+        genre: "$_id",
+        books: 1
+      }
+    }
+  ]);
+
+  // Convert array to object where key is genre
+  const result = {};
+  booksByGenre.forEach(({ genre, books }) => {
+    result[genre] = books;
+  });
+
+  return result;
+
+};
+
 const getBookById = async (bookId) => {
   return await Book.findById(bookId, '-book_file_url -book_file_id');
 };
@@ -177,6 +234,7 @@ const deleteBook = async (bookId) => {
 export default {
   searchBooks,
   getBooks,
+  getAllBooks,
   getBookById,
   getUserBooksBySection,
   readBook,

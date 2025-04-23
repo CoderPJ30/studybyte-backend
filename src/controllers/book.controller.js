@@ -21,6 +21,16 @@ const getBooks = async (req, res) => {
   }
 };
 
+const getAllBooks = async (req, res) => {
+  try {
+    const query = req.query;
+    const response = await bookService.getAllBooks(query);
+    successResponse({ res, data: response, message: "Books fetched successfully" });
+  } catch (error) {
+    errorResponse(req, res, error);
+  }
+};
+
 const getBookById = async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -88,6 +98,7 @@ const deleteBook = async (req, res) => {
 export default {
   searchBooks,
   getBooks,
+  getAllBooks,
   getBookById,
   getUserBooksBySection,
   readBook,

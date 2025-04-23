@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Book from "../models/book.model.js";
+import Cart from "../models/cart.model.js";
 
 const getUserProfile = async (userId) => {
   return await User.findById(userId).select("-user_password");
@@ -94,6 +95,37 @@ const updateUserProfile = async (userId, userData) => {
   return updatedUser;
 };
 
+const getUserCart = async (userId) => {
+  const cart = await Cart.findOne({ userId }).populate(
+    "books", "book_title book_author book_price book_cover"
+  );
+  if (!cart) throw { type: "DATA_NOT_FOUND", customMessage: "Cart not found" };
+
+  return cart.books;
+}
+
+const addBookToCart = async (userId, bookId) => {
+  const cart = await Cart.findOne({ userId });
+  if (!cart) {
+    return await Cart.create({ userId, books: [bookId] });
+  }
+
+  if (!cart.books.includes(bookId)) {
+    cart.books.push(bookId);
+  }
+
+  await cart.save();
+}
+
+const removeBookFromCart = async (userId, bookId) => {
+  const cart = await Cart.findOne({ userId });
+  if (!cart) throw { type: "DATA_NOT_FOUND", customMessage: "User not found" };
+
+  cart.books = cart.books.filter((b) => b.toString() !== bookId);
+  await cart.save();
+}
+
+
 export default {
   getUserProfile,
   getUserBooks,
@@ -101,4 +133,7 @@ export default {
   bookmarkBook,
   rateBook,
   updateUserProfile,
+  getUserCart,
+  addBookToCart,
+  removeBookFromCart,
 };
