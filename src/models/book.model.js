@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const genres = ['Fiction', 'Non-Fiction', 'Fantasy', 'Mystery', 'Thriller',
   'Romance', 'Horror', 'Science Fiction', 'Biography', 'Autobiography',
   'Self-Help', 'Cookbooks', 'Travel', 'History', 'Science', 'Poetry', 'Drama',
-  'Humor', 'Art', 'Children', 'Young Adult', 'Comics', 'Manga', 'Graphic Novels', 'Other'
+  'Humor', 'Art', 'Children', 'Young Adult', 'Comics', 'Manga', 'Graphic Novels', 'Other', 'Education',
+  'Textbook', 'Reference', 'Business', 'Finance', 'Health', 'Fitness', 'Religion', 'Spirituality',
 ];
 
 const bookSchema = new mongoose.Schema({
