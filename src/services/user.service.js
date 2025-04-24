@@ -119,11 +119,29 @@ const addBookToCart = async (userId, bookId) => {
 
 const removeBookFromCart = async (userId, bookId) => {
   const cart = await Cart.findOne({ userId });
-  if (!cart) throw { type: "DATA_NOT_FOUND", customMessage: "User not found" };
+  if (!cart) throw { type: "DATA_NOT_FOUND", customMessage: "Cart not found" };
 
   cart.books = cart.books.filter((b) => b.toString() !== bookId);
   await cart.save();
 }
+
+const buyBook = async (userId, bookIds) => {
+  const user = await User.findById(userId);
+  if (!user) throw { type: "DATA_NOT_FOUND", customMessage: "User not found" };
+
+  const books = await Book.find({ _id: { $in: bookIds } });
+  if (books.length === 0) throw { type: "DATA_NOT_FOUND", customMessage: "Books not found" };
+
+  const cart = await Cart.findOne({ userId });
+  if (cart) {
+    cart.books = cart.books.filter((b) => !bookIds.includes(b.toString()));
+    await cart.save();
+  }
+
+  user.user_purchased_books.push(...books.map((b) => b._id));
+  await user.save();
+}
+
 
 
 export default {
@@ -136,4 +154,5 @@ export default {
   getUserCart,
   addBookToCart,
   removeBookFromCart,
+  buyBook,
 };

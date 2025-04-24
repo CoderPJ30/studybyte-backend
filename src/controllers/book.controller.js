@@ -41,6 +41,16 @@ const getBookById = async (req, res) => {
   }
 };
 
+const getBooksByIds = async (req, res) => {
+  try {
+    const { bookIds } = req.body;
+    const books = await bookService.getBooksByIds(bookIds);
+    successResponse({ res, data: books, message: "Books fetched successfully" });
+  } catch (error) {
+    errorResponse(req, res, error);
+  }
+};
+
 const getUserBooksBySection = async (req, res) => {
   try {
     const section = req.params.section;
@@ -100,6 +110,7 @@ export default {
   getBooks,
   getAllBooks,
   getBookById,
+  getBooksByIds,
   getUserBooksBySection,
   readBook,
   uploadBook,

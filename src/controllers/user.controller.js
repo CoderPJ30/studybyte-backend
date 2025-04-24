@@ -99,6 +99,17 @@ const removeBookFromCart = async (req, res) => {
   }
 }
 
+const buyBook = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const bookIds = req.body.bookIds;
+    await userService.buyBook(userId, bookIds);
+    successResponse({ res, message: "Book purchased successfully." });
+  } catch (error) {
+    errorResponse(req, res, error);
+  }
+}
+
 export default {
   getUserProfile,
   getUserBooks,
@@ -109,4 +120,5 @@ export default {
   getUserCart,
   addBookToCart,
   removeBookFromCart,
+  buyBook,
 };

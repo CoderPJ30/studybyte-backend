@@ -3,8 +3,8 @@ import { successResponse, errorResponse } from "../utils/apiResponse.js";
 
 const register = async (req, res) => {
   try {
-    const { fullName, email, password } = req.body;
-    const { data, token } = await authSerivce.register({ fullName, email, password });
+    const { fullname, email, password } = req.body;
+    const { data, token } = await authSerivce.register({ fullname, email, password });
     successResponse({ res, data, token, message: "User registered successfully" });
   } catch (error) {
     errorResponse(req, res, error);

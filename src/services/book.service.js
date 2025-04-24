@@ -119,6 +119,13 @@ const getBookById = async (bookId) => {
   return await Book.findById(bookId, '-book_file_url -book_file_id');
 };
 
+const getBooksByIds = async (bookIds) => {
+  if (!bookIds || bookIds.length === 0) return [];
+  console.log("Book IDs:", bookIds);
+
+  return await Book.find({ _id: { $in: bookIds } }, '-book_file_url -book_file_id');
+};
+
 const getUserBooksBySection = async (section, userId) => {
   const validSections = ["purchased", "reading", "liked", "saved", "rated"];
 
@@ -236,6 +243,7 @@ export default {
   getBooks,
   getAllBooks,
   getBookById,
+  getBooksByIds,
   getUserBooksBySection,
   readBook,
   uploadBook,

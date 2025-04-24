@@ -10,6 +10,7 @@ const userRoutes = (api) => {
   api.post('/user/book/:bookId/bookmark', verifyToken, userControllers.bookmarkBook);
   api.post('/user/book/:bookId/rate', verifyToken, userControllers.rateBook);
   api.post('/user/cart/book/:bookId', verifyToken, userControllers.addBookToCart);
+  api.post('/user/book/buy', verifyToken, userControllers.buyBook);
 
   api.put('/user/update', verifyToken, userControllers.updateUserProfile);
 
