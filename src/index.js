@@ -27,7 +27,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       process.env.CORS_ORIGIN,
-      "https://studybyte-six.vercel.app",
+      "https://study-byte.vercel.app",
       "http://localhost:5173" // for local development
     ];
 
