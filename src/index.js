@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
+import serverless from 'serverless-http';
 
 // database connection
 import './db/index.js';
@@ -89,4 +90,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-export default app;
+export const handler = serverless(app);
